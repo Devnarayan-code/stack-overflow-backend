@@ -13,7 +13,7 @@ export const signup = async(req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = await users.create({ name, email, password: hashedPassword })
-        // const token = jwt.sign ({ email: newUser.email, id:newUser._id}, process.env.JWT_SECRET , { expiresIn: '1h' });
+        const token = jwt.sign ({ email: newUser.email, id:newUser._id}, process.env.JWT_SECRET , { expiresIn: '1h' });
         res.status(200).json({message:"new user created"});
     } catch (error){
         res.status(500).json("Something went wrong...")
@@ -22,7 +22,7 @@ export const signup = async(req, res) => {
 }
 
 export const login = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
     try{
         const existinguser  = await users.findOne({ email });
 
